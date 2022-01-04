@@ -2599,7 +2599,7 @@ span.timeline {
     background-size: 8px;
     background-repeat: no-repeat;
     background-position: 96% center;
-    width: 50%;
+    width: 100%;
 }
 .upload_add i {
     border: 1px solid #868686;

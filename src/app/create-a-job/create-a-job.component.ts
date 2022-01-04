@@ -11,11 +11,23 @@ import { HeaderService, HttpIntercepter, LoaderService } from '../app.service';
 })
 export class CreateAJobComponent implements OnInit {
 
+  platform: any = '';
+  job_category: any = '';
+  title_of_job: any = '';
+  job_description: any = '';
+  job_image: any = '';
+  advt_description: any = '';
+  URL_link: any = '';
+  budget_advt: any = '';
+  duration_advt: any = '';
+  delivery_advt: any = '';
+
   filePath: string;
   platformForm: FormGroup;
   infojobForm: FormGroup;
   joblistingForm: FormGroup;
   imageUpload: string[];
+  userData : any;
 
   selectedTab = 0;
   isClassOneActive: boolean[] = [];
@@ -49,6 +61,7 @@ export class CreateAJobComponent implements OnInit {
       budget_advt: new FormControl(),
       duration_advt: new FormControl(),
       delivery_advt: new FormControl(),
+      img: new FormControl()
     })
 
 
@@ -78,10 +91,11 @@ export class CreateAJobComponent implements OnInit {
   }
 
 
-  imagePreview(e: any) {
+  imagePreview(e: Event): void {
     // this.loader.start();
-    const file = e.target.files[0];
-    this.joblistingForm.patchValue({
+    const file = (e.target as HTMLInputElement).files[0];
+    console.log(file)
+      this.joblistingForm.patchValue({
       img: file
     });
     
@@ -93,68 +107,57 @@ export class CreateAJobComponent implements OnInit {
       console.log(this.filePath);
       this.imageUpload = this.filePath.split(',');
       console.log(this.imageUpload);
-
-      // let formData = new FormData();
-      // formData.append('image', this.imageUpload[1]);
-      
-      // const formValue0 = this.imgUpload.value;
-      // let requestObj = {};
-      // requestObj['image'] = formValue0.image;
-
-      // return this.authttp.post('profile_setup',formValue0).subscribe(
-      //   res =>{
-      //     console.log(res);
-      //     console.log(formValue0);
-      //     this.loader.stop();
-          
-      //     if(res.success == true){
-      //       this.isClassOneActive[this.selectedTab-1] = true;
-      //       this.isClassOneActive[this.selectedTab] = true;
-      //       this.selectedTab += 1;
-      //       this.toastr.success(res.message);        
-      //     }
-      //   },
-      //   err => {
-      //     this.toastr.error('Something went wrong. Please try again.');
-      //     this.loader.stop();
-      // });
     }
     reader?.readAsDataURL(file)
   }
 
 
   createJob() {
-
+    
     const jobPlatformData = this.platformForm.value;
     const jobInfoData = this.infojobForm.value;
     const jobListData = this.joblistingForm.value;
 
-    let requestObj = {}
-    requestObj['platform'] = jobPlatformData.platform;
-    requestObj['job_category'] = jobInfoData.job_category;
-    requestObj['title_of_job'] = jobInfoData.title_of_job;
-    requestObj['job_description'] = jobInfoData.job_description;
-    requestObj['job_image'] = jobListData.job_image;
-    requestObj['advt_description'] = jobListData.advt_description;
-    requestObj['URL_link'] = jobListData.URL_link;
-    requestObj['budget_advt'] = jobListData.budget_advt;
-    requestObj['duration_advt'] = jobListData.duration_advt;
-    requestObj['delivery_advt'] = jobListData.delivery_advt;
+    this.loader.start();
+    let formData = new FormData();
+    formData.append('platform', jobPlatformData.platform);
+    formData.append('job_category', jobInfoData.job_category);
+    formData.append('title_of_job', jobInfoData.title_of_job);
+    formData.append('job_description', jobInfoData.job_description);
+    formData.append('job_image', jobListData.img);
+    formData.append('advt_description', jobListData.advt_description);
+    formData.append('URL_link', jobListData.URL_link);
+    formData.append('budget_advt', jobListData.budget_advt);
+    formData.append('duration_advt', jobListData.duration_advt);
+    formData.append('delivery_advt', jobListData.delivery_advt);
 
-    return this.authttp.post('create_a_job', requestObj).subscribe(
-      res=>{
+
+    // let requestObj = {}
+    // requestObj['platform'] = jobPlatformData.platform;
+    // requestObj['job_category'] = jobInfoData.job_category;
+    // requestObj['title_of_job'] = jobInfoData.title_of_job;
+    // requestObj['job_description'] = jobInfoData.job_description;
+    // requestObj['job_image'] = jobListData.img;
+    // requestObj['advt_description'] = jobListData.advt_description;
+    // requestObj['URL_link'] = jobListData.URL_link;
+    // requestObj['budget_advt'] = jobListData.budget_advt;
+    // requestObj['duration_advt'] = jobListData.duration_advt;
+    // requestObj['delivery_advt'] = jobListData.delivery_advt;
+
+    return this.authttp.post('create_a_job', formData).subscribe(
+      res=> {
         this.loader.stop();
         console.log(res);
-        console.log(requestObj);
-        if(res.success == true){
+        console.log(formData);
+        if(res.success == false) {
           this.isClassOneActive[this.selectedTab] = true;
-          this.toastr.success(res.message);
+          this.toastr.error('Please complete your job list');
         }
-        else{
-          this.toastr.error(res.message);
+        else {
+          this.toastr.success('Job created successfully!');
         }
       },
-      err =>{
+      err => {
         this.toastr.error('Something went wrong. Please try again.');
         this.loader.stop();
     });

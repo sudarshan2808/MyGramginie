@@ -18,6 +18,7 @@ export class CreateListingComponent implements OnInit {
   filePath2: string;
   filePath3: string;
   filePath4: string;
+  files?: File[];
 
   imageUpload: string[] = [];
   profile_page: any = '';
@@ -37,7 +38,10 @@ export class CreateListingComponent implements OnInit {
   page_likes: any = '';
   page_views: any = '';
   
-  userData : any;
+  userData1 : any;
+  userData2 : any;
+  userData3 : any;
+  userData4 : any;
   createData : any;
   selectedTab = 0;
   isClassOneActive: boolean[] = [];
@@ -91,7 +95,11 @@ export class CreateListingComponent implements OnInit {
     profile_page: new FormControl(),
     top_location: new FormControl(),
     gender: new FormControl(),
-    age_range: new FormControl()
+    age_range: new FormControl(),
+    img1: new FormControl(),
+    img2: new FormControl(),
+    img3: new FormControl(),
+    img4: new FormControl()
   })
 
 
@@ -193,58 +201,32 @@ export class CreateListingComponent implements OnInit {
   }
 
 
-  imagePreview1(e: any) {
+  imagePreview1(e: Event): void {
     // this.loader.start();
-    const file = e.target.files[0];
+    // const file = files[0];
+    const file = (e.target as HTMLInputElement).files[0];
     this.insightForm.patchValue({
-      img: file
+      img1: file
     });
-    
-    this.insightForm.get('img')?.updateValueAndValidity()
-    
+    this.insightForm.get('img1')?.updateValueAndValidity()
     const reader = new FileReader();
     reader.onload = () => {
       this.filePath1 = reader.result as string;
       console.log(this.filePath1);
       this.imageUpload = this.filePath1.split(',');
       console.log(this.imageUpload);
-
-      // let formData = new FormData();
-      // formData.append('image', this.imageUpload[1]);
-      
-      // const formValue0 = this.imgUpload.value;
-      // let requestObj = {};
-      // requestObj['image'] = formValue0.image;
-
-      // return this.authttp.post('profile_setup',formValue0).subscribe(
-      //   res =>{
-      //     console.log(res);
-      //     console.log(formValue0);
-      //     this.loader.stop();
-          
-      //     if(res.success == true){
-      //       this.isClassOneActive[this.selectedTab-1] = true;
-      //       this.isClassOneActive[this.selectedTab] = true;
-      //       this.selectedTab += 1;
-      //       this.toastr.success(res.message);        
-      //     }
-      //   },
-      //   err => {
-      //     this.toastr.error('Something went wrong. Please try again.');
-      //     this.loader.stop();
-      // });
     }
-    reader?.readAsDataURL(file)
+    reader?.readAsDataURL(file);
   }
-  imagePreview2(e: any) {
+
+  imagePreview2(e: Event): void {
     // this.loader.start();
-    const file = e.target.files[0];
+    // const file = e.target.files[0];
+    const file = (e.target as HTMLInputElement).files[0];
     this.insightForm.patchValue({
-      img: file
+      img2: file
     });
-    
-    this.insightForm.get('img')?.updateValueAndValidity()
-    
+    this.insightForm.get('img2')?.updateValueAndValidity();
     const reader = new FileReader();
     reader.onload = () => {
       this.filePath2 = reader.result as string;
@@ -254,15 +236,15 @@ export class CreateListingComponent implements OnInit {
     }
     reader?.readAsDataURL(file)
   }
-  imagePreview3(e: any) {
+
+  imagePreview3(e: Event) {
     // this.loader.start();
-    const file = e.target.files[0];
+    // const file = e.target.files[0];
+    const file = (e.target as HTMLInputElement).files[0];
     this.insightForm.patchValue({
-      img: file
+      img3: file
     });
-    
-    this.insightForm.get('img')?.updateValueAndValidity()
-    
+    this.insightForm.get('img3')?.updateValueAndValidity();
     const reader = new FileReader();
     reader.onload = () => {
       this.filePath3 = reader.result as string;
@@ -272,15 +254,15 @@ export class CreateListingComponent implements OnInit {
     }
     reader?.readAsDataURL(file)
   }
-  imagePreview4(e: any) {
+
+  imagePreview4(e: Event): void {
     // this.loader.start();
-    const file = e.target.files[0];
+    // const file = e.target.files[0];
+    const file = (e.target as HTMLInputElement).files[0];
     this.insightForm.patchValue({
-      img: file
+      img4: file
     });
-    
-    this.insightForm.get('img')?.updateValueAndValidity()
-    
+    this.insightForm.get('img4')?.updateValueAndValidity();
     const reader = new FileReader();
     reader.onload = () => {
       this.filePath4 = reader.result as string;
@@ -321,26 +303,7 @@ export class CreateListingComponent implements OnInit {
 
   createList() {
     // this.loader.start();
-    // let getCreateList = new FormData();
-    // getCreateList.append('platform', this.platform);
-    // getCreateList.append('category', this.category);
-    // getCreateList.append('tags', this.tags);
-    // getCreateList.append('profile_page', this.profile_page);
-    // getCreateList.append('gender', this.gender);
-    // getCreateList.append('age_range', this.age_range);
-    // getCreateList.append('delevery_time', this.delevery_time);
-    // getCreateList.append('post_engagement', this.post_engagement);
-    // getCreateList.append('page_followrs', this.page_followrs);
-    // getCreateList.append('majority_audience_gender', this.majority_audience_gender);
-    // getCreateList.append('majority_audience_age', this.majority_audience_age);
-    // getCreateList.append('majority_audience_location', this.majority_audience_location);
-    // getCreateList.append('post_reach', this.post_reach);
-    // getCreateList.append('story_reach', this.story_reach);
-    // getCreateList.append('media_upload', this.media_upload);
-    // getCreateList.append('total_likes', this.total_likes);
-    // getCreateList.append('page_likes', this.page_likes);
-    // getCreateList.append('page_views', this.page_views);
-    // getCreateList.append('top_location', this.top_location);
+
 
     const platformData = this.platformForm.value;
     const promotionData = this.promotionForm.value;
@@ -351,44 +314,68 @@ export class CreateListingComponent implements OnInit {
     const accountData = this.accountForm.value;
     const advertiseData = this.advertiseForm.value;
 
-    let requestObj = {};
-    requestObj['platform'] = platformData.platform;
-    requestObj['select_duration'] = promotionData.select_duration;
-    requestObj['enter_a_price'] = promotionData.enter_a_price;
-    requestObj['category'] = categoryData.category;
-    requestObj['tags'] = tagsData.tags;
-    requestObj['profile_page'] = insightData.profile_page;
-    requestObj['top_location'] = insightData.top_location;
-    requestObj['gender'] = insightData.gender;
-    requestObj['age_range'] = insightData.age_range;
-    requestObj['delevery_time'] = deliveryTimeData.delevery_time;
-    requestObj['post_engagement'] = accountData.post_engagement;
-    requestObj['page_followrs'] = accountData.page_followrs;
-    requestObj['majority_audience_gender'] = accountData.majority_audience_gender;
-    requestObj['majority_audience_age'] = accountData.majority_audience_age;
-    requestObj['majority_audience_location'] = accountData.majority_audience_location;
-    requestObj['post_reach'] = accountData.post_reach;
-    requestObj['story_reach'] = accountData.story_reach;
-    requestObj['media_upload'] = accountData.media_upload;
-    requestObj['total_likes'] = accountData.total_likes;
-    requestObj['page_likes'] = accountData.page_likes;
-    requestObj['page_views'] = accountData.page_views;
-    requestObj['delivery_advt'] = advertiseData.delivery_advt;
+    let formData = new FormData();
+    formData.append('platform', platformData.platform);
+    formData.append('select_duration', promotionData.select_duration);
+    formData.append('enter_a_price', promotionData.enter_a_price);
+    formData.append('category', categoryData.category);
+    formData.append('tags', tagsData.tags);
+    formData.append('profile_page', insightData.img1);
+    formData.append('top_location', insightData.img2);
+    formData.append('gender', insightData.img3);
+    formData.append('age_range', insightData.img4);
+    formData.append('delevery_time', deliveryTimeData.delevery_time);
+    formData.append('post_engagement', accountData.post_engagement);
+    formData.append('page_followrs', accountData.page_followrs);
+    formData.append('majority_audience_gender', accountData.majority_audience_gender);
+    formData.append('majority_audience_age', accountData.majority_audience_age);
+    formData.append('majority_audience_location', accountData.majority_audience_location);
+    formData.append('post_reach', accountData.post_reach);
+    formData.append('story_reach', accountData.story_reach);
+    formData.append('media_upload', accountData.media_upload);
+    formData.append('total_likes', accountData.total_likes);
+    formData.append('page_likes', accountData.page_likes);
+    formData.append('page_views', accountData.page_views);
+    formData.append('delivery_advt', advertiseData.delivery_advt);
     
-    return this.authttp.post('create_listing', requestObj).subscribe(
-      res=>{
-        this.loader.stop();
+    // let requestObj = {};
+    // requestObj['platform'] = platformData.platform;
+    // requestObj['select_duration'] = promotionData.select_duration;
+    // requestObj['enter_a_price'] = promotionData.enter_a_price;
+    // requestObj['category'] = categoryData.category;
+    // requestObj['tags'] = tagsData.tags;
+    // requestObj['profile_page'] = insightData.img1;
+    // requestObj['top_location'] = insightData.img2;
+    // requestObj['gender'] = insightData.img3;
+    // requestObj['age_range'] = insightData.img4;
+    // requestObj['delevery_time'] = deliveryTimeData.delevery_time;
+    // requestObj['post_engagement'] = accountData.post_engagement;
+    // requestObj['page_followrs'] = accountData.page_followrs;
+    // requestObj['majority_audience_gender'] = accountData.majority_audience_gender;
+    // requestObj['majority_audience_age'] = accountData.majority_audience_age;
+    // requestObj['majority_audience_location'] = accountData.majority_audience_location;
+    // requestObj['post_reach'] = accountData.post_reach;
+    // requestObj['story_reach'] = accountData.story_reach;
+    // requestObj['media_upload'] = accountData.media_upload;
+    // requestObj['total_likes'] = accountData.total_likes;
+    // requestObj['page_likes'] = accountData.page_likes;
+    // requestObj['page_views'] = accountData.page_views;
+    // requestObj['delivery_advt'] = advertiseData.delivery_advt;
+    
+     this.authttp.post('create_listing', formData).subscribe(
+      res=> {
         console.log(res);
-        console.log(requestObj);
-        if(res.success == true){
+        console.log(formData);
+        this.loader.stop();
+        if(res.success == false) {
           this.isClassOneActive[this.selectedTab] = true;
-          this.toastr.success(res.message);
+          this.toastr.error('Please complete your list');
         }
-        else{
-          this.toastr.error(res.message);
+        else {
+          this.toastr.success('List created successfully!');
         }
       },
-      err =>{
+      err => {
         this.toastr.error('Something went wrong. Please try again.');
         this.loader.stop();
     });

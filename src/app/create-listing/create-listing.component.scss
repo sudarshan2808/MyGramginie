@@ -1,0 +1,15 @@
+
+._btn_promotion {
+    display: flex;
+    gap: 5px;
+}
+._dur_promo {
+    width: 45%;
+    @media (max-width: 767px) {
+        width: 100%;
+    }
+}
+._price_promo {
+    width: 40%
+}
+        

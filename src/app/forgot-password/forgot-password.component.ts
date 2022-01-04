@@ -22,6 +22,8 @@ export class ForgotPasswordComponent implements OnInit {
   otpLay: boolean = false;
   timeLeft: number = 60; 
   interval;
+  isChecked: boolean = false;
+
   isresendButton:boolean = false;
   emailPattern  = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
   constructor(
@@ -38,10 +40,7 @@ export class ForgotPasswordComponent implements OnInit {
       this.notification.getHeaderText('forgotpassword');
       this.notification.getHeaderType('loginheader');
    }
-   email = new FormControl('', [
-    Validators.required,
-    Validators.email,
-  ]);
+   email = new FormControl('', [ Validators.required, Validators.email ]);
 
 
   ngOnInit(): void {
@@ -60,27 +59,46 @@ export class ForgotPasswordComponent implements OnInit {
   
   doforgot(values){
     this.loader.start();
-    let formData = new FormData();
-    formData.append('email', this.email.value); 
-    return this.authttp.post('forgotPassword',formData).subscribe(
+    let formData = { email: this.email.value };
+
+    // const formValue = this.forgotForm.value;
+    // let requestObj = {};
+    // requestObj['email'] = formValue.email;
+
+
+    if(this.isChecked == true){
+      localStorage.setItem('email', this.email.value);
+      // this.cookieService.set('email', this.email.value);
+      // this.cookieService.set('password', this.password.value);
+    } else {
+      localStorage.removeItem('email');
+      // this.cookieService.delete('email');
+      // this.cookieService.delete('password');
+    }
+
+    return this.authttp.post('forgot_password', formData).subscribe(
       res => {
+      console.log(res);
+      console.log(formData);
       this.loader.stop();
-      if(res.status == 200){
-        this.toastr.success(res.message);
-        this.userid = res.data['id'];
-        this.emailtext = values?.email;
-        this.otpLay = true;
-        this.isresendButton = true;
-				this.timeLeft = 60;
-				this.interval = setInterval(() => {
-			      if(this.timeLeft > 0) {
-			        this.timeLeft--;
-			      } else {
-			        this.isresendButton = false;
-			      }
-			    },1000)
-      }
-      else{
+      if(res.status == 200) {
+        // this.toastr.success(res.message);
+        // this.userid = res.data['id'];
+        // this.emailtext = values?.email;
+        // this.otpLay = true;
+        // this.isresendButton = true;
+				// this.timeLeft = 60;
+				// this.interval = setInterval(() => {
+			  //   if(this.timeLeft > 0) {
+			  //     this.timeLeft--;
+		    //   } else {
+		    //     this.isresendButton = false;
+		    //   }
+			  // }, 1000)
+
+        localStorage.setItem('token',res.token);
+        this.toastr.success('Verification link has been sent to your registered mail!');
+      } else {
         this.toastr.error(res.message);
       } 
       

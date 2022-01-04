@@ -8,6 +8,7 @@ import { HowToBuyComponent } from './how-to-buy/how-to-buy.component';
 import { HowToSellComponent } from './how-to-sell/how-to-sell.component';
 import { PostAndHireInfluencerComponent } from './post-and-hire-influencer/post-and-hire-influencer.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
+import { ChangePasswordComponent } from './change-password/change-password.component'; 
 import { ResetPasswordComponent } from './reset-password/reset-password.component'; 
 import { ProfileComponent } from './profile/profile.component';
 import { BecomeInfluencerComponent } from './become-influencer/become-influencer.component';
@@ -111,6 +112,10 @@ const routes: Routes = [
   {
     path: 'forgot_password',
     component: ForgotPasswordComponent
+  },
+  {
+    path: 'change_password',
+    component: ChangePasswordComponent
   },
   {
     path: 'reset_password',

@@ -1,4 +1,4 @@
-   <app-header></app-header>
+   <app-header [imageUpload]="filePath"></app-header>
    <!-- banner part here -->
    <section class="find_infulencer section">
       <div class="container">
@@ -95,26 +95,26 @@
                                        <form class="pic_upload" [formGroup]="imgUpload" (ngSubmit)="imageSubmit()">
 
                                           <div class="form-group">
-                                            <input type="file" id="upload_pic" class="d-none" formControlName="image" (change)="imagePreview($event)">
+                                            <input type="file" id="upload_pic" class="d-none rounded-circle" formControlName="image" (change)="imagePreview($event)">
                                             <label class="uploaded_pic" for="upload_pic">
                                                <!-- <img [src]="filePath || this.userData?.image" alt="" class="rounded-circle"> -->
-                                               <img src="assets/images/profile-setup/PS-Icons-13.svg" [src]="filePath || this.userData?.image" alt="" class="rounded-circle">
+                                               <img *ngIf="filePath || this.userData?.image" [src]="filePath || this.userData?.image" alt="" class="rounded-circle  profile_img">
                                              </label>
-                                            <label mat-raised-button class="add_pic" for="upload_pic" type="submit">Add Profile Photo</label>
+                                            <label mat-raised-button class="add_pic" for="upload_pic" >Add Profile Photo</label>
 
-                                             <a mat-raised-button class="Profile_step_btns  _img_next" (click)="next()" >Next</a>
+                                             <a mat-raised-button class="Profile_step_btns  _img_next" type="submit" (click)="next()" >Next</a>
                                              <!-- <button class="Profile_step_btns  _img_next" (click)="next()">Next</button> -->
 
-                                             <a class="skip_button" (click)="next();" href="javascript:;">Skip this step <img
+                                             <!-- <a class="skip_button" (click)="next();" href="javascript:;">Skip this step <img
                                                   src="assets/images/profile-setup/angel_left.png" alt="">
-                                             </a>
+                                             </a> -->
                                           </div>
                                        </form>   
                                     </div>
                                  </div>
                               </div>
-                           </mat-tab>
-                           <mat-tab>
+                        </mat-tab>
+                        <mat-tab>
                               <ng-template mat-tab-label>
                                  <li class="nav-item" role="presentation" id="profile1">
                                     <a class="nav-link"> 
@@ -190,8 +190,8 @@
                                     </div>
                                  </div>
                               </div>
-                           </mat-tab>
-                           <mat-tab>
+                        </mat-tab>
+                        <mat-tab>
                               <ng-template mat-tab-label>
                                  <li class="nav-item" role="presentation">
                                      <a class="nav-link"><span class="tab_top-left d-flex justify-content-start align-items-center">
@@ -236,33 +236,36 @@
                                              name="city" id="city" [value]="this.userData?.city !== ''?this.userData?.city : 'Select City'">
                                                 <option selected hidden [value]="this.userData?.city !== ''?this.userData?.city : 'Select City'">{{this.userData?.city !== ''? this.userData?.city : 'Select City'}}</option>
                                                 <option value="London">London</option>
-                                                <option value="Paris">Paris</option>
-                                                <option value="Goa">Goa</option>
                                                 <option value="Delhi">Delhi</option>
+                                                <option value="Moscow">Moscow</option>
+                                                <option value="Paris">Paris</option>
                                              </select>
                                           </div>
                                           <div class="form-group half-width">
                                              <label class="d-block" for="code">ZIP/Postal Code:</label>
-                                             <select class="form-control-custom select-form" name="code"  formControlName="postal_code"
+                                             <input type="text" name="code" class="form-control-custom search_input"
+                                                placeholder="Enter postal code" formControlName="postal_code"
+                                                 [value]="this.userData?.postal_code !== ''? this.userData?.postal_code : ''">
+                                             <!-- <select class="form-control-custom select-form" name="code"  formControlName="postal_code"
                                               id="code" [value]="this.userData?.postal_code !== ''?this.userData?.postal_code : 'Select Zip'">
                                                 <option selected hidden [value]="this.userData?.postal_code !== ''?  this.userData?.postal_code : 'Select Zip'">{{this.userData?.postal_code !== ''? this.userData?.postal_code : 'Select Zip'}}</option>
                                                 <option value="12345">12345</option>
-                                                <option value="67895">67895</option>
+                                                <option value="47895">47895</option>
                                                 <option value="63378">63378</option>
-                                                <option value="12563">12563</option>
-                                             </select>
+                                                <option value="82563">82563</option>
+                                             </select> -->
                                           </div>
                                           <div class="profile_tab_bttn_part mt-4 pt-md-3">
                                              <a mat-raised-button class="profile_tab_bttn" type="submit" (click)="next()">Next</a>
                                              <a class="skipp" (click)="back()"><img
                                                 src="assets/images/profile-setup/angel_left.png" alt=""> Back</a>
-                                             </div>
-                                          </form>
+                                          </div>
+                                       </form>
                                    </div>
                                 </div>
                               </div>
-                           </mat-tab>
-                           <mat-tab>
+                        </mat-tab>
+                        <mat-tab>
                               <ng-template mat-tab-label>
                                  <li class="nav-item" role="presentation">
                                     <a class="nav-link"> <span class="tab_top-left d-flex justify-content-start align-items-center">
@@ -306,14 +309,16 @@
                                        </div>
                                     </div>
                                     <!-- <a mat-raised-button class="profile_tab_bttn" type="submit" (click)="next()">Next</a> -->
-                                    <button class="Profile_step_btns " type="submit" (click)="next()">Next</button>
-                                    <a class="skipp" href="javascript:;" (click)="back()">
-                                       <img src="assets/images/profile-setup/angel_left.png" alt=""> Back
-                                    </a>
+                                    <div class="profile_tab_bttn_part mt-4 pt-md-3 _lang_submit">
+                                       <button class="Profile_step_btns _lang_next" type="submit" (click)="next()">Next</button>
+                                       <a class="skipp" href="javascript:;" (click)="back()">
+                                          <img src="assets/images/profile-setup/angel_left.png" alt=""> Back
+                                       </a>
+                                 </div>
                                  </div>
                               </div>
-                           </mat-tab>
-                           <mat-tab>
+                        </mat-tab>
+                        <mat-tab>
                               <ng-template mat-tab-label>
                                  <li class="nav-item" role="presentation">
                                        <a class="nav-link"> <span class="tab_top-left d-flex justify-content-start align-items-center">
@@ -400,8 +405,8 @@
                                     </div>
                                  </div>
                               </div>
-                           </mat-tab>
-                           <mat-tab>
+                        </mat-tab>
+                        <mat-tab>
                               <ng-template mat-tab-label>
                               <li class="nav-item " role="presentation">
                                     <a class="nav-link"> <span class="tab_top-left d-flex justify-content-start align-items-center">
@@ -453,12 +458,12 @@
                                           <h4>Thanks for registering with Gramgenie, you can now continue and start your journey
                                              with Gramgenie.
                                           </h4>
-                                          <a class="Profile_step_btns" (click)="profileData()">Continue</a>
+                                          <a class="Profile_step_btns" href="javascript:;" (click)="profileData()">Continue</a>
                                        </div>
                                     </div>
                                  </div>
                               </div>
-                           </mat-tab>
+                        </mat-tab>
                      </mat-tab-group>             
                </ul>
          </div>

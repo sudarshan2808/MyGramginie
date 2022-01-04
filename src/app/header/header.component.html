@@ -278,13 +278,18 @@
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                        <a class="dropdown-item cursor-pointer" routerLink="/profile">Profile</a>
                        <a class="dropdown-item cursor-pointer" (click)="logout()">Log Out</a>
-                       <a class="dropdown-item cursor-pointer" href="#">Change Password</a>
+                       <a class="dropdown-item cursor-pointer" routerLink="/change_password" >Change Password</a>
                     </div>
                  </div>
               </div>
               <div class="col-auto px-md-3 px-1">
                  <span class="profile_img">
-                    <img src="{{userdatass.photo}}" [src]="filePath || this.userdatass?.image" class="profile_img" alt="">
+                    <!-- <img src="{{userdatass.photo}}" [src]="filePath || this.userdatass?.image" class="profile_img" alt=""> -->
+                    <!-- <input type="file" id="upload_pic" class="d-none rounded-circle" formControlName="image" (change)="imagePreview($event)"> -->
+                    
+                    <!-- <img src="assets/images/influencer-profile/business-portrait.png"  alt="" class="profile_img"> -->
+                    <img src="{{ imageUpload }}" [src]="filePath || this.userdatass?.image"  alt="" class="profile_img">
+                    <!-- <img  *ngIf="userdatass" [src]="userdatass"  alt="" class="profile_img"> -->
                  </span>
               </div>
            </div>
@@ -335,7 +340,7 @@
                         </div>
                         <div class="col-lg-9 mt-4">
                           <div class="form-field">
-                            <button class="submit rounded" (click)="choose()" [disabled]="!chooseForm.valid" [routerLink]="['/sign_up']"  [queryParams]="{ type:this.chooseForm.get('type').value}">Continue</button>
+                            <button class="submit rounded"  [disabled]="!chooseForm.valid" [routerLink]="['/sign_up']"  [queryParams]="{ type:this.chooseForm.get('type').value}">Continue</button>
                           </div>
                         </div>
                     </div>

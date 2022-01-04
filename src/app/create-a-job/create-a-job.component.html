@@ -661,7 +661,7 @@
                             <div class="col-12 pb-5 ">
                                 <ul class="nav nav-pills mb-3 flex-nowrap border-bottom pb-3 justify-content-start" id="pills-tab" role="tablist">
                                  <li class="nav-item listing_design">
-                                   <a class="nav-link active d-inline-flex" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true"> <span class="text-secondary item_no "> 1 </span> <span class="text-dark pl-2 text_size">platform</span> </a>
+                                   <a class="nav-link active d-inline-flex" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true"> <span class="text-secondary item_no "> 1 </span> <span class="text-dark pl-2 text_size">Platform</span> </a>
                                  </li>            
                                   <li class="nav-item listing_design">
                                     <a class="nav-link  d-inline-flex" id="pills-home4-tab" data-toggle="pill" href="#pills-home4" role="tab" aria-controls="pills-home4" aria-selected="true"> <span class="text-secondary item_no d-inline-flex"> 2 </span> <span class="text-dark pl-2 text_size">Information
@@ -679,55 +679,55 @@
                                 <div class="tab-content mt-4" id="pills-tabContent">
 
                                     <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
-                                        <div class="row">
-                                            <form [formGroup]="platformForm">
+                                          <div class="row">
+                                             <form [formGroup]="platformForm">
                                                 <div class="col-12 radio_heading">
                                                     <span class="text-primary heading_top_common">Select the platform you want your products and services advertised on </span>
                                                 </div>
                                                 <div class="col-12 pt-md-4 pt-2 pb-2">
-                                                    <div class="row  justify-content-around">
-                                                        <div class="col py-1">
-                                                            <div class="form-check form-check-inline custom_radio">
+                                                   <div class="row  justify-content-around">
+                                                      <div class="col py-1">
+                                                         <div class="form-check form-check-inline custom_radio">
                                                             <input class="form-check-input d-none" type="radio" formControlName="platform" 
                                                             name="platform" id="inlineRadio1" value="instagram">
                                                             <label class="form-check-label text-muted " for="inlineRadio1">Instagram</label>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col py-1">
-                                                            <div class="form-check form-check-inline custom_radio">
+                                                         </div>
+                                                      </div>
+                                                      <div class="col py-1">
+                                                         <div class="form-check form-check-inline custom_radio">
                                                             <input class="form-check-input d-none" type="radio"
                                                             formControlName="platform" 
                                                             name="platform" id="inlineRadio2" value="youtube">
                                                             <label class="form-check-label text-muted" for="inlineRadio2">Youtube</label>
                                                             </div>
-                                                        </div>
-                                                        <div class="col py-1">
-                                                            <div class="form-check form-check-inline custom_radio">
+                                                         </div>
+                                                      <div class="col py-1">
+                                                         <div class="form-check form-check-inline custom_radio">
                                                             <input class="form-check-input d-none" type="radio"
                                                             formControlName="platform" 
                                                             name="platform" id="inlineRadio3" value="tiktok">
                                                             <label class="form-check-label text-muted" for="inlineRadio3">Tiktok</label>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col py-1">
-                                                            <div class="form-check form-check-inline custom_radio">
+                                                         </div>
+                                                      </div>
+                                                      <div class="col py-1">
+                                                         <div class="form-check form-check-inline custom_radio">
                                                             <input class="form-check-input d-none" type="radio"
                                                             formControlName="platform" 
                                                             name="platform" id="inlineRadio4" value="facebook">
                                                             <label class="form-check-label text-muted" for="inlineRadio4">Facebook</label>
-                                                            </div>
-                                                        </div>
-                                                    </div>
+                                                         </div>
+                                                      </div>
+                                                   </div>
                                                 </div>
-                                                <div class="col-12 pt-md-5 pt-4 ">
-                                                    <div class="row">
-                                                        <div class="col-md-3">
+                                                <!-- <div class="col-12 pt-md-5 pt-4 ">
+                                                   <div class="row">
+                                                      <div class="col-md-3">
                                                         <a class="create_list d-flex justify-content-center" href="javascript:;">Next</a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </form> 
-                                        </div>
+                                                      </div>
+                                                   </div>
+                                                </div> -->
+                                             </form> 
+                                          </div>
                                     </div>
                               
                                     <div class="tab-pane fade" id="pills-home4" role="tabpanel" aria-labelledby="pills-home4-tab">
@@ -817,12 +817,12 @@
                                                                                 </div>
                                                                             </div>
                                                                         </div>
-                                                                        <div class="col-12">
+                                                                        <!-- <div class="col-12">
                                                                             <div class="profile_tab_bttn_part mt-md-4 mt-3 pt-md-3">
                                                                                 <button class="profile_tab_bttn">Next</button>
                                                                                 <a class="skipp" href="javascript:;"><img src="assets/images/profile-setup/angel_left.png" alt=""> Back</a>
                                                                             </div>
-                                                                        </div>
+                                                                        </div> -->
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -855,7 +855,8 @@
                                                             <input type="file" class="d-none" id="image" name="job_image"
                                                             formControlName="job_image" (change)="imagePreview($event)">
                                                             <label for="image" class="select_img">
-                                                                <img src="assets/images/add1.png" class="img-fluid" alt="">
+
+                                                                <img *ngIf="filePath || this.userData?.job_image"  [src]="filePath || this.userData?.job_image" class="img-fluid" alt="">
                                                                     <span class="d-block">Select an Image or Video
                                                                         or Drag and Drop a file
                                                                     </span>
@@ -962,12 +963,12 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-12 pt-md-5 pt-4">
+                                                <!-- <div class="col-12 pt-md-5 pt-4">
                                                     <div class="profile_tab_bttn_part mt-md-4 mt-3 pt-md-3">
                                                         <button class="profile_tab_bttn">Next</button>
                                                         <a class="skipp" href="javascript:;"><img src="assets/images/profile-setup/angel_left.png" alt=""> Back</a>
                                                     </div>
-                                                </div>
+                                                </div> -->
                                             </form>
                                         </div> 
                                     </div>
@@ -1003,8 +1004,9 @@
 
                                                     <div class="col-12 ">
                                                         <div class="profile_tab_bttn_part mt-md-5 mt-4 pt-md-3">
-                                                        <button class="profile_tab_bttn" (click)="createJob()">Next</button>
-                                                        <a class="skipp" href="javascript:;"><img src="assets/images/profile-setup/angel_left.png" alt=""> Back</a>
+                                                        <button class="profile_tab_bttn" (click)="createJob()">Create</button>
+                                                        <!-- <a class="skipp" href="javascript:;">
+                                                         <img src="assets/images/profile-setup/angel_left.png" alt=""> Back</a> -->
                                                         </div>
                                                     </div>
                                                 </div>

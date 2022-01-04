@@ -63,20 +63,16 @@ export class ProfileComponent implements OnInit {
     private dataService: DataService,
     private loader:LoaderService,  
     private toastr: ToastrService, 
+    private router:Router,
     private el: ElementRef
     ) { 
-    // this.imgUpload = this.fb.group({
-    //   img: [null],
-    //   filename: ['']
-    // })
-    // this.locationForm = this.fb.group({})
-    // this.phoneForm = this.fb.group({})
   }
 
   ngOnInit(): void {
 
       this.imgUpload = new FormGroup({
-        image: new FormControl('',{validators:[Validators.required]})
+        image: new FormControl(),
+        img: new FormControl()
       });
 
       this.phoneForm = new FormGroup({
@@ -105,22 +101,6 @@ export class ProfileComponent implements OnInit {
     this.otpForm = !this.otpForm;
   }
 
-  // imgUpload = new FormGroup({
-  //   image: new FormControl()
-  // });
-
-  // phoneForm = new FormGroup({
-  //   phone: new FormControl()
-  // });
-
-  // locationForm = new FormGroup({
-  //   country: new FormControl(),
-  //   street: new FormControl(),
-  //   apt: new FormControl(),
-  //   city: new FormControl(),
-  //   code: new FormControl(),
-  // })
-
   imageSubmit(){
     console.log(this.imgUpload)
   }
@@ -132,164 +112,31 @@ export class ProfileComponent implements OnInit {
   locationSubmit(){
     console.log(this.locationForm)
   }
+  
 
-  // profileSubmit() {
-  //   console.log(this.profileForm);
-  // }
-
-
-  imagePreview(e: any) {
+  imagePreview(e: Event): void {
     // this.loader.start();
-    const file = e.target.files[0];
+    // const file = e.target.files[0];
+    const file = (e.target as HTMLInputElement).files[0];
     this.imgUpload.patchValue({
       img: file
     });
-    
-    this.imgUpload.get('img')?.updateValueAndValidity()
-    
+    this.imgUpload.get('img')?.updateValueAndValidity() 
     const reader = new FileReader();
     reader.onload = () => {
       this.filePath = reader.result as string;
+      // this.filePath = event.target.result;
       console.log(this.filePath);
       this.imageUpload = this.filePath.split(',');
       console.log(this.imageUpload);
-
-      // let formData = new FormData();
-      // formData.append('image', this.imageUpload[1]);
-      
-      // const formValue0 = this.imgUpload.value;
-      // let requestObj = {};
-      // requestObj['image'] = formValue0.image;
-
-      // return this.authttp.post('profile_setup',formValue0).subscribe(
-      //   res =>{
-      //     console.log(res);
-      //     console.log(formValue0);
-      //     this.loader.stop();
-          
-      //     if(res.success == true){
-      //       this.isClassOneActive[this.selectedTab-1] = true;
-      //       this.isClassOneActive[this.selectedTab] = true;
-      //       this.selectedTab += 1;
-      //       this.toastr.success(res.message);        
-      //     }
-      //   },
-      //   err => {
-      //     this.toastr.error('Something went wrong. Please try again.');
-      //     this.loader.stop();
-      // });
     }
     reader?.readAsDataURL(file)
   }
-
-  // addPhone(){
-  //   // this.loader.start();
-  //   // let getPhone = new FormData();
-  //   // getPhone.append('phone', this.phone);
-
-  //   const formValue1 = this.phoneForm.value;
-  //   let requestObj = {};
-  //   requestObj['phoneCode'] = formValue1.phoneCode;
-  //   requestObj['phone'] = formValue1.phone;
-    
-  //   return this.authttp.post('profile_setup', formValue1).subscribe(
-  //     res=>{
-  //       this.loader.stop();
-  //       console.log(res);
-  //       console.log(formValue1);
-        
-  //       if(res.success == true){
-  //         this.otpForm = !this.otpForm;  
-  //         this.toastr.success(res.message);      
-  //       }   
-  //     },
-  //     err => {
-  //       this.toastr.error('Something went wrong. Please try again.');
-  //       this.loader.stop();
-  //     });
-  // }
-
-  // addLocation(){
-  //   // this.loader.start();
-  //   // let getLocation = new FormData();
-  //   // getLocation.append('street', this.userData?.street );
-  //   // getLocation.append('country', this.userData?.country);
-  //   // getLocation.append('apt', this.userData?.apt);
-  //   // getLocation.append('city', this.userData?.city);
-  //   // getLocation.append('postal_code', this.userData?.postal_code);
-
-  //   const formValue2 = this.locationForm.value;
-  //   let requestObj = {};
-  //   requestObj['street'] = formValue2.street;
-  //   requestObj['country'] = formValue2.country;
-  //   requestObj['apt'] = formValue2.apt;
-  //   requestObj['city'] = formValue2.city;
-  //   requestObj['postal_code'] = formValue2.postal_code;
-
-
-  //   return this.authttp.post('profile_setup', formValue2).subscribe(
-  //     res=>{
-  //       console.log(res);
-  //       console.log(formValue2);
-  //       this.loader.stop();
-
-  //       if(res.success == true){
-  //         this.isClassOneActive[3] = true;
-  //         this.toastr.success(res.message);
-  //       }
-  //     },
-  //     err =>{
-  //       this.toastr.error('Something went wrong. Please try again.');
-  //       this.loader.stop();
-  //   });
-  // }
 
   onOtpChange(e){ 
     this.otptext = e;
   }
 
-  // verifyOtp(){
-  //   this.loader.start();
-  //   let getData = new FormData();
-  //   getData.append('phone', this.phone);
-  //   getData.append('code', this.otptext);
-  //   return this.authttp.post('verifyCode', getData).subscribe(
-  //     res=>{
-  //       this.loader.stop();
-  //       if(res.success == true){
-  //         this.isClassOneActive[this.selectedTab] = true;
-  //         this.selectedTab += 1;
-  //         this.toastr.success(res.message);
-  //       }
-  //       else{
-  //         this.toastr.error(res.message);
-  //       }
-  //     }, 
-  //     err =>{
-  //       this.toastr.error('Something went wrong. Please try again.');
-  //       this.loader.stop();
-  //     });
-  // }
-
-  // resend() {
-  //   this.loader.start();
-  //   let getReData = new FormData();
-  //   getReData.append('phone', this.phone);
-  //   return this.authttp.post('profile_setup', getReData).subscribe(
-  //     res=>{
-  //       this.loader.stop();
-  //       if(res.success == true){
-  //         this.toastr.success(res.message);
-  //       }
-  //       else{
-  //         this.toastr.error(res.message);
-  //       }
-  //     },
-  //     err =>{
-  //       this.toastr.error('Something went wrong. Please try again.');
-  //       this.loader.stop();
-  //     });
-  // }
 
   instaData(){
     this.loader.start();
@@ -318,55 +165,52 @@ export class ProfileComponent implements OnInit {
     });
 
   }
-  // currentdate = new Date();
-  // onemonth= new Date();
-  // qtr= new Date();
-  // half= new Date();
-  // full= new Date();
-  // onOptionsSelected(value: any){
-  //   this.currentdate = new Date(value);
-  //   console.log(this.currentdate);
-  //   this.onemonth =new Date(value);
-  //   this.qtr= new Date(value);
-  //   this.half= new Date(value);
-  //   this.full= new Date(value);
-  //   this.onemonth = new Date(this.onemonth.setDate(this.currentdate.getDate() + 30))
-  //   this.qtr = new Date(this.qtr.setDate(this.currentdate.getDate() + 120))
-  //   this.half = new Date(this.half.setDate(this.currentdate.getDate() + 180))
-  //   this.full = new Date(this.full.setDate(this.currentdate.getDate() + 365))
-  // }
   
-
   profileData() {
     
     const phoneData = this.phoneForm.value;
     const locationData = this.locationForm.value;
     const imgData = this.imgUpload.value;
     // const formValue3 = this.profileForm.value;
-    let requestObj = {};
-    requestObj['image'] = this.imageUpload[1];
-    requestObj['country'] = locationData.country;
-    requestObj['apt'] = locationData.apt;
-    requestObj['city'] = locationData.city;
-    requestObj['postal_code'] = locationData.postal_code;
-    requestObj['language'] = 'language_ui';
-    requestObj['lang_type'] = 'lang_type_ui';
-    requestObj['street'] = locationData.street;
-    requestObj['status'] = 'true';
-    requestObj['phone'] = phoneData.phone;
-    
 
-    return this.authttp.post('profile_setup', requestObj).subscribe(
+    this.loader.start();
+    let formData = new FormData();
+    formData.append('image', imgData.img);
+    formData.append('phone', phoneData.phone);
+    formData.append('country', locationData.country);
+    formData.append('street', locationData.street);
+    formData.append('apt', locationData.apt);
+    formData.append('city', locationData.city);
+    formData.append('postal_code', locationData.postal_code);
+    // formData.append('language', imgData.img);
+    // formData.append('lang_type', imgData.img);
+
+
+    // let requestObj = {};
+    // requestObj['image'] = imgData.img;
+    // requestObj['phone'] = phoneData.phone;
+    // requestObj['country'] = locationData.country;
+    // requestObj['street'] = locationData.street;
+    // requestObj['apt'] = locationData.apt;
+    // requestObj['city'] = locationData.city;
+    // requestObj['postal_code'] = locationData.postal_code;
+    // requestObj['language'] = 'language_ui';
+    // requestObj['lang_type'] = 'lang_type_ui';
+    
+    return this.authttp.post('profile_setup', formData).subscribe(
       res=>{
-        // this.loader.stop();
+        this.loader.stop();
         console.log(res);
-        console.log(requestObj);
-        if(res.success == true){
+        console.log(formData);
+        if(res.status == true){
           this.isClassOneActive[this.selectedTab] = true;
-          this.toastr.success(res.message);
+          localStorage.getItem('token');
+          this.toastr.success('Profile setup successfully!');
+          this.router.navigate(['/home']);
         }
         else{
-          this.toastr.error(res.message);
+          // this.toastr.error(res.message);
+          this.toastr.error('Please complete your profile!');
         }
       },
       err =>{

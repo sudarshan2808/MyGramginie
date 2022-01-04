@@ -1,5 +1,5 @@
 import { Component, OnInit ,Compiler, Input} from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import {Router,ActivatedRoute} from '@angular/router'; 
 import { AppService, HeaderService,HttpIntercepter } from '../app.service';  
 import {Globals} from '../global';
@@ -20,6 +20,10 @@ export class HeaderComponent implements OnInit {
   userType: string;
   userData : any;
 
+  imgUpload: FormGroup;
+   filePath: string;
+   @Input() imageUpload: string[];
+
   constructor(
     private authttp: HttpIntercepter, 
     private router:Router,
@@ -38,16 +42,39 @@ export class HeaderComponent implements OnInit {
      choose(){
       this.userType = this.chooseForm.get('type').value;
       this.headerService.publishData(this.userType);
-      $("#signupwindow").modal("hide");
+      $("#signupwindow").modal("show");
      }
 
   ngOnInit(): void {  
     if(!(localStorage.getItem('token')) || (localStorage.getItem('token')) == null || (localStorage.getItem('token')) == 'undefined'){
       this.loginid="";
-      }else{
+      } else {
       this.loginid = localStorage.getItem('token');
     }
+
+    this.imgUpload = new FormGroup({
+      image: new FormControl(),
+      img: new FormControl()
+    });
   }
+
+  imagePreview(e: Event): void {
+    // this.loader.start();
+    const file = (e.target as HTMLInputElement).files[0];
+    this.imgUpload.patchValue({
+      img: file
+    });
+    this.imgUpload.get('img')?.updateValueAndValidity() 
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.filePath = reader.result as string;
+      console.log(this.filePath);
+      this.imageUpload = this.filePath.split(',');
+      console.log(this.imageUpload);
+    }
+    reader?.readAsDataURL(file)
+  }
+
   
   accountdata() {  
     return this.authttp.get('userfulldetails').subscribe(
@@ -72,8 +99,4 @@ export class HeaderComponent implements OnInit {
     this.headerService.updateHeader('loginheader');
     this.router.navigate(['/login']);
 	}
-
-  // changePassword() {
-  //   this.router.navigate(['/forgot_password']);
-  // }
 }

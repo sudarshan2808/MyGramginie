@@ -9,7 +9,7 @@ import { UserData } from './shared.objects';
 import {Globals} from './global';
 import {CanActivate,Router, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { BehaviorSubject, Subject , Observable } from 'rxjs';
-import { HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { catchError } from 'rxjs/operators';
 import { StorageService } from './services/storage.service';
@@ -35,9 +35,9 @@ export class HeaderService {
 
 
     private Login = new BehaviorSubject(this.storage.isAuthenticate());
-  isLogin = this.Login.asObservable();
-  Location: EventEmitter<object> = new EventEmitter();
-  isHttpRequest = new Subject<boolean>();
+    isLogin = this.Login.asObservable();
+    Location: EventEmitter<object> = new EventEmitter();
+    isHttpRequest = new Subject<boolean>();
 
 
 
@@ -51,6 +51,13 @@ export class HeaderService {
     publishData(data: any) {
       this.userType.next(data);
     }  
+
+
+    setLoginEmmit(isLogin: boolean) {
+        return this.Login.next(isLogin);
+    }
+
+
 }
 
 
@@ -92,7 +99,7 @@ export class HttpClientService {
     this.createAuthorizationHeader(headers);
     return this.http.get(this.serviceBase+url, {
       headers: headers
-    }) ;
+    });
   }
 
   post(url, data) {
@@ -100,7 +107,7 @@ export class HttpClientService {
     this.createAuthorizationHeader(headers);
     return this.http.post(this.serviceBase+url, data, {
       headers: headers
-    }) ;
+    });
   }     
 }
 
@@ -114,7 +121,8 @@ export class AuthService {
 
     constructor(
         private router: Router,
-        private headerService: HeaderService) { }
+        private headerService: HeaderService,
+        private httpclient: HttpClient) { }
 
     me(): UserData {
         let me: UserData = new UserData;
@@ -135,11 +143,30 @@ export class AuthService {
 
     isLoggedIn(): boolean {
         let token = localStorage.getItem('token');
-        console.log(!!token);
-                
-        return !!token;
-        
+        console.log(!!token);         
+        return !!token;   
     }
+
+    // isSignedUp() : boolean {
+    //     let token = localStorage.getItem('token');
+    //     console.log(!!token);
+    //     return !!token;
+    // }
+
+
+    // verifyToken(url: any, token: any): Observable<any> {
+    //     return this.httpclient.post(API+url, token, {
+    //           headers: new HttpHeaders({ 'Content-Type': 'text/plain' })
+    //     });
+    //   }
+
+
+    //   getToken() {
+    //     return localStorage.getItem('token');
+    //   }
+
+
+
 
     isAdmin(): boolean {
         return this.getRole() === 'admin';
@@ -183,6 +210,7 @@ export class HttpIntercepter {
     token: string;
 
     constructor(private http: Http,
+        private httpClient: HttpClient,
         private auth: AuthService,
         private headerService: HeaderService,
         private router: Router,
@@ -235,6 +263,8 @@ export class HttpIntercepter {
     get(url, extraHeader?: Headers) {
         let headers = !(extraHeader) ? new Headers() : extraHeader;
         this.createAuthorizationHeader(headers);
+
+            // OBSERVABLE
         return this.http.get(API+url, { headers: headers})
             .map(res => res.json())
             .catch(error => this.handleError(error));
@@ -247,7 +277,7 @@ export class HttpIntercepter {
             .map(res => res.json())
             .catch(error => this.handleError(error));
     }
-
+    
     // put(url, data, extraHeader?: Headers) {
     //     let headers = !(extraHeader) ? new Headers() : extraHeader;
     //     this.createAuthorizationHeader(headers);
@@ -293,13 +323,11 @@ export class HttpIntercepter {
     }
 
 
-
-
 }
 
 
 @Injectable()
-export class HttpClient {
+export class HttpClients {
 
     public serviceBase:any;
     httpOptions: { headers: HttpHeaders; };
@@ -474,4 +502,5 @@ export class NotificationService {
     getHeaderType(headertype){
         this.global.headertype = headertype;
     }
+
 }

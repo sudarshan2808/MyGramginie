@@ -1,9 +1,10 @@
+import { StorageService } from './../services/storage.service';
 import { Component, OnInit ,Compiler} from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import {Router,ActivatedRoute} from '@angular/router'; 
 import { ToastrService } from 'ngx-toastr';
-import { Subject } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { HeaderService,HttpIntercepter,LoaderService,NotificationService } from '../app.service';  
 import {Globals} from '../global';
@@ -21,7 +22,15 @@ export class EmailVerificationComponent implements OnInit {
   values: any;
   userType: string;
   resendForm: FormGroup;
+  emailForm: FormGroup;
   destroyer: Subject<boolean> = new Subject();
+
+  isChecked: boolean = false;
+  emailisverify: any;
+
+  userId: string;
+  token: string;
+  private subscription: Subscription ;
 
   constructor(
     private router:Router,
@@ -33,7 +42,8 @@ export class EmailVerificationComponent implements OnInit {
     private loader:LoaderService,
     private toastr: ToastrService,
     private route: ActivatedRoute,
-    private notification:NotificationService) {
+    private notification:NotificationService,
+    private storage: StorageService) {
 
       this.notification.getHeaderText('emailverify');
       this.notification.getHeaderType('login');
@@ -41,10 +51,7 @@ export class EmailVerificationComponent implements OnInit {
       this.resendForm = this.fb.group({
         'email' : ["", [Validators.required, Validators.email]],
       })
-
-      
-
-     }
+    }
 
   ngOnInit(): void {  
     window.scrollTo(0, 0)
@@ -62,17 +69,12 @@ export class EmailVerificationComponent implements OnInit {
     console.log(this.values);
 
 
-
-
-    // this.headerService.isLogin.pipe(takeUntil(this.destroyer))
-    //   .subscribe((isLogin: boolean) => {
-    //     if (!isLogin) {
-    //       this.router.navigate(['/email-verification']);
-    //     } else {
-    //       this.router.navigate(['/profile']);
-    //     }
-    //   });
     
+    this.route.queryParams.subscribe(queryParams => {
+      const token = queryParams['token'];
+      // Call your Backend API with the token after this
+    });
+
   }
 
   change(){
@@ -111,7 +113,7 @@ export class EmailVerificationComponent implements OnInit {
     this.loader.start();
     let formData = new FormData();
     formData.append('email', this.values['email']); 
-    return this.authttp.post('influencer_resendotp',formData).subscribe(
+    return this.authttp.post('email_verification',formData).subscribe(
       res => {
       this.loader.stop();
       console.log(res);
@@ -130,11 +132,6 @@ export class EmailVerificationComponent implements OnInit {
 
   }
 
-  // continue_verif() {
-  //   this.router.navigate(['/profile']);
-  // }
-
-
   tabChanged(tabChangeEvent: MatTabChangeEvent): void {
     console.log('index => ', tabChangeEvent.index);
     if(tabChangeEvent.index == 0){
@@ -145,42 +142,41 @@ export class EmailVerificationComponent implements OnInit {
     }
   }
 
+  continue_verify() {
 
-  continue_verif() {
-    // this.loader.start();
-    // let formData = new FormData();
-    // this.authttp.get('profile').subscribe(
-    //   res => {
-    //     this.loader.stop();
-    //     console.log(res);
-    //     // console.log(formData);
-    //     if (res.status === 200) {
-    //       this.toastr.success(res.message);
-    //     }
-    //     else {
-    //       this.toastr.error(res.message);
-    //     }
-    //   },
-    //   err => {
-    //     this.toastr.error('Something went wrong. Please try again.');
-    //     this.loader.stop();
-    //   });
+    this.loader.start();
+    let formData = { email: this.values['email'] };
+    // formData.append('email', this.values['email']); 
 
-    if(this.values) {
-      if(this.values.email != '' || null || undefined) {
-        // sessionStorage.setItem('token',  JSON.stringify(this.values));
-        // this.router.navigate(['/profile']);
+    if(this.isChecked == true){
+      localStorage.setItem('email', this.resendForm.value);
+    } else {
+      localStorage.removeItem('email');
+    } 
 
-
-        if(this.type == 'Influencer'){
-          localStorage.setItem('token',  JSON.stringify(this.values));
-          this.router.navigate(['/profile'], { queryParams: { type: this.type }} );
+     this.authttp.post('token_generate',formData).subscribe(
+      res => {
+        console.log(res);
+        this.loader.stop();
+        if(res.status == 200 || res.verify == true) {
+          if(this.type == 'Influencer') {
+          localStorage.setItem('token',res.token);
+          localStorage.getItem('token');
+          this.toastr.success('Influencer verified successfully!');
+          this.router.navigate(['/profile'], { queryParams: { type: this.type }});
         } else {
-          this.toastr.success('Email verified successfully!');
-        }
-
-
+          // this.toastr.error(res.message);
+          this.toastr.success('Business Owner verified successfully!');
+        } 
+      } else {
+        this.toastr.error(res.message);
       }
-    }
+    },
+      err => {
+        this.toastr.error('Something went wrong. Please try again.');
+        this.loader.stop();
+      });
   }
+
+  
 }

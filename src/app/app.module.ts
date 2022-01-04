@@ -27,6 +27,7 @@ import { HowToSellComponent } from './how-to-sell/how-to-sell.component';
 import { PostAndHireInfluencerComponent } from './post-and-hire-influencer/post-and-hire-influencer.component';
 import { BecomeInfluencerComponent } from './become-influencer/become-influencer.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
+import { ChangePasswordComponent } from './change-password/change-password.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component'; 
  
 import {MatCheckboxModule} from '@angular/material/checkbox';
@@ -44,7 +45,7 @@ import {MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import {MatSortModule } from '@angular/material/sort';
 import {MatSnackBarModule } from '@angular/material/snack-bar'; 
 import {MatExpansionModule} from '@angular/material/expansion';
-import {DatePipe } from '@angular/common'; 
+import {APP_BASE_HREF, DatePipe } from '@angular/common'; 
 
 import {
   SocialLoginModule,
@@ -117,6 +118,7 @@ import { CreateAJobComponent } from './create-a-job/create-a-job.component';
     PostAndHireInfluencerComponent,
     BecomeInfluencerComponent,
     ForgotPasswordComponent,
+    ChangePasswordComponent,
     ResetPasswordComponent,
     ProfileComponent,
     EmailVerificationComponent,
@@ -161,7 +163,7 @@ import { CreateAJobComponent } from './create-a-job/create-a-job.component';
     CustomerViewProfileComponent,
     InfluencerCurrentTrackYourOrdersComponent,
     InfluencerMarketplaceComponent,
-    CreateAJobComponent
+    CreateAJobComponent,
   ],
   imports: [
     BrowserModule,
@@ -197,7 +199,8 @@ import { CreateAJobComponent } from './create-a-job/create-a-job.component';
     NotificationService,HeaderService,ManualAuthService,LoginActivate,LoaderService,
     CommonService,HttpIntercepter, DataService,
     
-    { provide: AuthServiceConfig, useFactory: getAuthServiceConfigs }
+    { provide: AuthServiceConfig, useFactory: getAuthServiceConfigs },
+    { provide: APP_BASE_HREF, useValue: '/' }
   ], 
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]

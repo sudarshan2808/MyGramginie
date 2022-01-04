@@ -1,4 +1,22 @@
-<app-header></app-header>
+<!-- <app-header></app-header> -->
+<header class="header_part classic_header menu_item_padding position_abs new_header">
+   <div class="container custom_container">
+     <div class="row">
+       <div class="col-lg-12">          
+         <nav class="navbar navbar-expand-lg justify-content-between align-items-center" >
+            <a class="navbar-brand main_logo"  routerLink="/home">
+               <img src="assets/images/GGLogo-06.svg" alt="">
+            </a>
+            <div class="header_right_option">
+               <div class="ecplore_btn mr-lg-0 mr-3">
+                  <a routerLink="/home">Explore</a>
+               </div>
+            </div>
+         </nav>
+        </div>
+     </div>
+  </div>
+</header>
 <!-- banner part here -->
 <section class="find_infulencer section">
     <div class="container">
@@ -34,7 +52,7 @@
                       </div>
                    </a>
                    <a class="resend_btn" href="javascript:;" (click)="resend()">Resend Verification Email</a><br>
-                   <a class="resend_btn" href="javascript:;" (click)="continue_verif()">Continue</a>
+                   <a class="resend_btn" href="javascript:;" (click)="continue_verify()">Continue</a>
                 </div>
              </div>
           </div>

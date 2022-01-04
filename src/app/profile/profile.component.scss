@@ -125,6 +125,13 @@
     width: 25%;
     height: 45px;
   }
+  ._lang_submit {
+    display: flex;
+    gap: 25px;
+      ._lang_next {
+        margin-top: -5px;
+      }
+  }
 } 
 // ::ng-deep .mat-button, .mat-icon-button, .mat-stroked-button, .mat-flat-button {
 //   text-align: center;

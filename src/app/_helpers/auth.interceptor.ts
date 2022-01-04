@@ -1,14 +1,17 @@
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpErrorResponse, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {HttpRequest, HttpHandler, HttpEvent, HttpInterceptor} from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { TokenStorageService } from '../services/token-storage.service';
 import { environment } from 'src/environments/environment';
+import { catchError } from 'rxjs/operators';
 
 const TOKEN_HEADER_KEY = 'Authorization';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
+
+  errorObj: any;
 
   constructor(private token: TokenStorageService) {}
 
@@ -32,8 +35,15 @@ export class AuthInterceptor implements HttpInterceptor {
 
      }
 
-    return next.handle(request);
-    // return next.handle(request);
+    return next.handle(request).pipe(
+      catchError((_errorResponse: HttpErrorResponse) => {
+       if (this.errorObj instanceof HttpErrorResponse) {
+        if (this.errorObj.status === 0) {
+          return throwError('Unable to Connect to the Server');
+        }
+       }
+      })
+    );
   }
 }
 
